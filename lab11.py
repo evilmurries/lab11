@@ -7,8 +7,8 @@ class Room:
     # Constructor method for class Room
     def __init__(self, name='', desc='', exits=''):
         self.name = name
-        self.desc = ''
-        self.exits = ''
+        self.desc = desc
+        self.exits = exits
         self.beenVisited = False
 
     # This method returns the name of the room
@@ -51,16 +51,33 @@ class Player:
     def getInventory(self):
         return self.inventory
 
+    # This method sets the location of the player
+    def setLocation(self, location):
+        self.location = location
+
+    def getLocation(self):
+        return self.location
+
 # Main function for the game
 def Main():
 
-    # Create map and player
+    # Create map and player | Test Classes
     player1 = Player()
     descCell = 'A cold, lonely jail cell'
     room1 = Room('cell', descCell, 'n')
-    print room1
-    print room1.getName()
-    print player1
+    player1.setLocation(room1)
+    commands = ['examine', 'n', 's', 'w', 'e']
 
+    gameWon = False
+
+    while gameWon != True:
+
+        print player1.getLocation().getName()
+        print player1.getLocation().getDesc()
+        input = requestString('Which way to go?')
+
+        if input == 'n':
+            gameWon = True
+            print 'Congratulations, you escaped!'
     # Put in a loop that checks if the player got to the exit
     # If they did, then the loop ends and they win.
