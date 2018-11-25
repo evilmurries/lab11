@@ -94,15 +94,19 @@ def Main():
     descHall = 'The hallway of a prison. To the south there is a jailcell. \
         To the east is the kitchen.'
     descKitchen = 'The kitchen for the prison. There is an exit to the west'
+    descCloset = 'Closet in the Kitchen. You are in the wrong location!'
     room1 = Room('cell', descCell)
     room2 = Room('Hall', descHall)
     room3 = Room('Kitchen', descKitchen)
-
+    room4 = Room('Closet', descCloset)
     # Connect Rooms
     room1.setNorth(room2)
     room2.setSouth(room1)
     room2.setEast(room3)
     room3.setWest(room2)
+    room3.setNorth(room4)
+    room4.setSouth(room3)
+    
 
     # Create Player
     player1 = Player()
@@ -126,6 +130,7 @@ def Main():
             player1.setLocation(player1.getLocation().getExit(input))
         except:
             printNow('There is no exit in that direction')
+            break #to Stop Error
 
         if input == 'quit':
             gameWon = True
