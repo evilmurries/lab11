@@ -24,6 +24,18 @@ class Room:
     # This method returns the description of the room
     def getDesc(self):
         return self.desc
+      
+    def printExits(self):
+      return_string = ''
+      if self.north is not None:
+        return_string += 'There is an exit to the north.\n'
+      if self.south is not None:
+        return_string += 'There is an exit to the south.\n'
+      if self.east is not None:
+        return_string += 'There is an exit to the east.\n'
+      if self.west is not None:
+        return_string += 'There is an exit to the west.\n'
+      return return_string
 
     # This method returns the exit to the room based on the given direction
     def getExit(self, direction):
@@ -93,20 +105,19 @@ class Player:
 def Main():
 
     # Create Map 
-    descCell = 'A cold, lonely jail cell. The gate is open to the north'
-    descHall = 'The hallway of a prison. To the south there is a jailcell. \
-        To the east is the kitchen.'
-    descKitchen = 'The kitchen for the prison. Hall is still to the West. Door to North and East!'
-    descCloset = 'Closet in the Kitchen. You are in the wrong location!'
-    twoHall = 'Second Hallway, you have the option of a door to your East and South!'
+    descCell = 'A cold, lonely prison cell, your home for the last 15 years for a crime you did not do!'
+    descHall = 'The hallway of a prison. All your prisonmates are sound asleep. If you are loud, they will wake up and your cover will be blown. the'
+    descKitchen = 'The kitchen for the prison. Where the food is disgusting.'
+    descCloset = 'Closet in the Kitchen. It smells like somethind died in here. You are in the wrong location!'
+    twoHall = 'Another hallway, the prison cat is sound asleep.'
     
-    threeHall = 'Entering a hallway with a door to your North and East?'
-    twoCell = 'Entering another Cell.'
+    threeHall = 'Entering a third hallway. This place seemingly goes on forever.'
+    twoCell = 'Entering another Cell. Your old prisonmate who assaulted you is reading a book. He waves as you walk through the cell.'
     
     guardRoom = 'You enter and see about three guards. What should you do now?'
-    endDescription = 'This is the exit. Happy making it out Alive!'
+    endDescription = 'This is the exit. You\'re happy to make it out Alive!'
     
-    room1 = Room('cell', descCell)
+    room1 = Room('Your cell', descCell)
     room2 = Room('Hall', descHall)
     room3 = Room('Kitchen', descKitchen)
     room4 = Room('Closet', descCloset)
@@ -140,37 +151,69 @@ def Main():
     player1 = Player()
     player1.setLocation(room1)
 
-    # Test Classes
-    
-
     # Define Extra Variables
-    commands = ['examine', 'n', 's', 'w', 'e', 'get']
-
+    commands = ['examine', 'n', 's', 'e', 'w', 'get', 'exit', 'help']
+    directions = ['n', 's', 'e', 'w']
     gameWon = False
-
+    welcomeMessage = 'Welcome to Jailbreak\n You are a prisoner who is looking to escape from one of the most dangerous prisons in the world.\n 
+    helpMessage = 'Type exit to quit your game.\n''To move your player type n,s,e,and w.\n''Type get to pick up objects\n''Type in examine to look at your surroundings.\n' 
+    
+    # print welcome message
+    printNow(welcomeMessage)
+    printNow(helpMessage)
+    
     # Main game loop
     while gameWon != True:
+        printNow(player1.getLocation().getName())
+        printNow(player1.getLocation().getDesc())
+        printNow(player1.getLocation().printExits())
+        
+        # input loop. Keep asking for input until a valid command is received
+        inputValidation = False
+        while inputValidation == False:
+            input = requestString('What would you like to do?')
+            if input in commands:
+              inputValidation = True
+            else:
+              printNow('Invalid Command. Try Again')
 
-        try:
-            printNow(player1.getLocation().getName())
+        # handle a request to exit
+        if input == 'exit':
+          printNow('Quitting game. Have a nice day.')
+          break
+        
+        # handle a request for help
+        if input == 'help':
+            printNow(helpMessage) 
+          
+        # handle an examine request
+        if input == 'examine':
             printNow(player1.getLocation().getDesc())
-            input = requestString('Which way to go?')
+        
+        # handle movement requests
+        if input in directions:
+          nextRoom = player1.getLocation().getExit(input)
+          if nextRoom is not None:
             player1.setLocation(player1.getLocation().getExit(input))
-        except:
+          else:
             printNow('There is no exit in that direction')
-            break #to Stop Error
-
-        if input == 'quit':
-            gameWon = True
-            print 'Congratulations, you escaped!'
+        
         
         #######If there is a better way of doing this let me know ######
+        # game over conditions
         if player1.getLocation() == room9:
           gameWon = True
-          print 'You left'
+          print 'Congratulations, you escaped!'
         
        ##want to check if player is in guard room and tries to leave he will be caught and game ends.
-        
+        if player1.getLocation() == room8 and input:
+          gameWon = True
+          print 'You entered the Guard\'s Room. You got caught!!!'
           
-    # Put in a loop that checks if the player got to the exit
-    # If they did, then the loop ends and they win.
+
+          
+  
+  
+  
+  
+  
