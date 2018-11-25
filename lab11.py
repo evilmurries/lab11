@@ -103,6 +103,9 @@ def Main():
     threeHall = 'Entering a hallway with a door to your North and East?'
     twoCell = 'Entering another Cell.'
     
+    guardRoom = 'You enter and see about three guards. What should you do now?'
+    endDescription = 'This is the exit. Happy making it out Alive!'
+    
     room1 = Room('cell', descCell)
     room2 = Room('Hall', descHall)
     room3 = Room('Kitchen', descKitchen)
@@ -110,6 +113,8 @@ def Main():
     room5 = Room('2nd Hall', twoHall)
     room6 = Room('2nd Cell', twoCell)
     room7 = Room('3rd Hall', threeHall)
+    room8 = Room('Guard Room', guardRoom )
+    room9 = Room('Exit', endDescription)
     
     
     # Connect Rooms
@@ -127,6 +132,8 @@ def Main():
     room5.setEast(room7)#entering third hallway
     room7.setWest(room5)
     
+    room7.setNorth(room8)
+    room7.setEast(room9)
 
     # Create Player
     player1 = Player()
@@ -155,5 +162,6 @@ def Main():
         if input == 'quit':
             gameWon = True
             print 'Congratulations, you escaped!'
+       
     # Put in a loop that checks if the player got to the exit
     # If they did, then the loop ends and they win.
