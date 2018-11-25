@@ -134,6 +134,7 @@ def Main():
     
     room7.setNorth(room8)
     room7.setEast(room9)
+    
 
     # Create Player
     player1 = Player()
@@ -162,6 +163,14 @@ def Main():
         if input == 'quit':
             gameWon = True
             print 'Congratulations, you escaped!'
-       
+        
+        #######If there is a better way of doing this let me know ######
+        if player1.getLocation() == room9:
+          gameWon = True
+          print 'You left'
+        
+       ##want to check if player is in guard room and tries to leave he will be caught and game ends.
+        
+          
     # Put in a loop that checks if the player got to the exit
     # If they did, then the loop ends and they win.
