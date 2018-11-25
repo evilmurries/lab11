@@ -65,6 +65,9 @@ class Room:
     # This method sets the west exit for the room
     def setWest(self, room):
         self.west = room
+        
+    
+    
 
 # Class Player represents the player character
 class Player:
@@ -93,12 +96,22 @@ def Main():
     descCell = 'A cold, lonely jail cell. The gate is open to the north'
     descHall = 'The hallway of a prison. To the south there is a jailcell. \
         To the east is the kitchen.'
-    descKitchen = 'The kitchen for the prison. There is an exit to the west'
+    descKitchen = 'The kitchen for the prison. Hall is still to the West. Door to North and East!'
     descCloset = 'Closet in the Kitchen. You are in the wrong location!'
+    twoHall = 'Second Hallway, you have the option of a door to your East and South!'
+    
+    threeHall = 'Entering a hallway with a door to your North and East?'
+    twoCell = 'Entering another Cell.'
+    
     room1 = Room('cell', descCell)
     room2 = Room('Hall', descHall)
     room3 = Room('Kitchen', descKitchen)
     room4 = Room('Closet', descCloset)
+    room5 = Room('2nd Hall', twoHall)
+    room6 = Room('2nd Cell', twoCell)
+    room7 = Room('3rd Hall', threeHall)
+    
+    
     # Connect Rooms
     room1.setNorth(room2)
     room2.setSouth(room1)
@@ -106,6 +119,13 @@ def Main():
     room3.setWest(room2)
     room3.setNorth(room4)
     room4.setSouth(room3)
+    
+    room3.setEast(room5)
+    room5.setWest(room3)
+    room5.setSouth(room6)#entering second cell
+    room6.setNorth(room5) #would like this to be a gameOver later on - Wais
+    room5.setEast(room7)#entering third hallway
+    room7.setWest(room5)
     
 
     # Create Player
