@@ -6,10 +6,11 @@ class Room:
 
     # Constructor method for class Room
     def __init__(self, name='', desc='', north=None, south=None, \
-        west=None, east=None):
+        west=None, east=None, item = ''):
         self.name = name
         self.desc = desc
         self.beenVisited = False
+        self.item = item
 
         # set exits
         self.north = north
@@ -20,6 +21,18 @@ class Room:
     # This method returns the name of the room
     def getName(self):
         return self.name
+
+    # This method returns the items contained in the room
+    def getItem(self):
+      return self.item
+
+    # This method sets the item for the room
+    def setItem(self, item):
+        self.item = item
+
+    # This method removes an item from the room
+    def removeItem(self, item):
+        self.item = ''
 
     # This method returns the description of the room
     def getDesc(self):
@@ -97,9 +110,31 @@ class Player:
     def setLocation(self, location):
         self.location = location
 
+    # This method sets the player inventory
+    def setInventory(self, inventory):
+        self.inventory = inventory
+
     # This method returns the room that the player is currently in
     def getLocation(self):
         return self.location
+      
+    # This method adds an item to your inventory
+    def addInventory(self, itemToAdd):
+      self.inventory += itemToAdd + ' '
+
+    # This method prints out your inventory
+    def printInventory(self):
+        if self.inventory != '':
+            printNow('You have: ' + self.inventory)
+        else:
+            printNow('You do not have anything.')
+        if 'key' in self.inventory:
+            printNow('This looks like a gate key for the prison')
+        if 'lockpick' in self.inventory:
+            printNow('A flimsy lockpick that criminals use. Better off\
+ finding the key...')
+        if 'cat' in self.inventory:
+            printNow('Its a cat. Why did you take it???')
 
 # Main function for the game
 def Main():
@@ -108,7 +143,7 @@ def Main():
     descCell = 'A cold, lonely prison cell, your home for the last 15 years for a crime you did not do!'
     descHall = 'The hallway of a prison. All your prisonmates are sound asleep. If you are loud, they will wake up and your cover will be blown. the'
     descKitchen = 'The kitchen for the prison. Where the food is disgusting.'
-    descCloset = 'Closet in the Kitchen. It smells like somethind died in here. You are in the wrong location!'
+    descCloset = 'Closet in the Kitchen. It smells like something died in here. You are in the wrong location!'
     twoHall = 'Another hallway, the prison cat is sound asleep.'
     
     threeHall = 'Entering a third hallway. This place seemingly goes on forever.'
@@ -146,6 +181,7 @@ def Main():
     room7.setNorth(room8)
     room7.setEast(room9)
     
+    room4.setItem('key')
 
     # Create Player
     player1 = Player()
@@ -168,6 +204,10 @@ def Main():
         printNow(player1.getLocation().getDesc())
         printNow(player1.getLocation().printExits())
         
+        if player1.getLocation().getItem() != '':
+            item = player1.getLocation().getItem()
+            printNow('You see a: ' + item)
+
         # input loop. Keep asking for input until a valid command is received
         inputValidation = False
         while inputValidation == False:
@@ -197,6 +237,17 @@ def Main():
             player1.setLocation(player1.getLocation().getExit(input))
           else:
             printNow('There is no exit in that direction')
+
+        # handle a get request
+        if input == 'get':
+            getWhat = requestString('Get what?')
+            roomItem = player1.getLocation().getItem()
+            if roomItem == getWhat:
+                player1.addInventory(roomItem)
+                player1.getLocation().removeItem(roomItem)
+                printNow('Took item: ' + roomItem)
+            else:
+                printNow('Invalid command. Try again.')
         
         
         #######If there is a better way of doing this let me know ######
@@ -206,7 +257,7 @@ def Main():
           print 'Congratulations, you escaped!'
         
        ##want to check if player is in guard room and tries to leave he will be caught and game ends.
-        if player1.getLocation() == room8 and input:
+        if player1.getLocation() == room8:
           gameWon = True
           print 'You entered the Guard\'s Room. You got caught!!!'
           
