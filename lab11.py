@@ -155,7 +155,7 @@ def Main():
     commands = ['examine', 'n', 's', 'e', 'w', 'get', 'exit', 'help']
     directions = ['n', 's', 'e', 'w']
     gameWon = False
-    welcomeMessage = 'Welcome to Jailbreak\n You are a prisoner who is looking to escape from one of the most dangerous prisons in the world.\n 
+    welcomeMessage = 'Welcome to Jailbreak\n You are a prisoner who is looking to escape from one of the most dangerous prisons in the world.\n'
     helpMessage = 'Type exit to quit your game.\n''To move your player type n,s,e,and w.\n''Type get to pick up objects\n''Type in examine to look at your surroundings.\n' 
     
     # print welcome message
